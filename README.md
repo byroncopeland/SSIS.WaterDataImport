@@ -34,18 +34,18 @@ C# script
 
 importJSON Stored Procedure from water database (SQL 2016)
 
-DECLARE @sourceinfo varchar(Max)
- SELECT @sourceinfo = Bulkcolumn 
-   FROM OPENROWSET (BULK 'c:\water\waterinstant.json', SINGLE_BLOB) as j
+	DECLARE @sourceinfo varchar(Max)
+ 	SELECT @sourceinfo = Bulkcolumn  
+  	FROM OPENROWSET (BULK 'c:\water\waterinstant.json', SINGLE_BLOB) as j
  
- INSERT dbo.instantstage
- select JSON_Value (c.value, '$.name') as name
-		,JSON_Value (c.value, '$.sourceInfo.siteName') as site
+	INSERT dbo.instantstage
+ 	 SELECT JSON_Value (c.value, '$.name') as name
+ 		,JSON_Value (c.value, '$.sourceInfo.siteName') as site
 		,JSON_Value (p.value, '$.value') as parameter
 		,JSON_Value (vv.value, '$.value') as value
 		,JSON_Value (vv.value, '$.dateTime') as dtmeasure
- from OPENJSON(@sourceinfo, '$.value.timeSeries') as C
- CROSS APPLY OPENJSON(c.value, '$.variable.variableCode') as P 
- CROSS APPLY OPENJSON(c.value, '$.values') as V
- CROSS APPLY OPENJSON(v.value, '$.value') as vv
+	 FROM OPENJSON(@sourceinfo, '$.value.timeSeries') as C
+	 CROSS APPLY OPENJSON(c.value, '$.variable.variableCode') as P 
+	 CROSS APPLY OPENJSON(c.value, '$.values') as V
+	 CROSS APPLY OPENJSON(v.value, '$.value') as vv
  
