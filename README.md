@@ -1,4 +1,4 @@
-# WaterML-Import
+# WaterDataImport
 SSIS to retrieve JSON data from USGS and store in database
 
 Pulls data from USGS Instantaneous Values Web service.
@@ -9,8 +9,6 @@ Package variables allow for select number of days back from current day to retri
 Script Task creates web request and stores results to local .json file
 SQL Task Process JSON parses file using SQL stored procedure Water.dbo.importJSON 
 Data Flow inserts into final production table
-
-Note: project originally designed to use WaterML data source, but later changed to JSON format
 
 Key coding
 C# script
